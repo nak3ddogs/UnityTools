@@ -15,6 +15,8 @@ public class ServiceManager : MonoBehaviour
 
 		public virtual void OnFixedUpdate(float deltaTime) { }
 
+		public virtual void OnApplicationQuit() { }
+
 		public abstract void SetAsInstance();
 
 		public abstract void RemoveAsInstance();
@@ -91,5 +93,6 @@ public class ServiceManager : MonoBehaviour
 	private void OnApplicationQuit()
 	{
 		IsApplicationQuiting = true;
+		for (int i = 0; i < _services.Count; i++) _services[i].OnApplicationQuit();
 	}
 }

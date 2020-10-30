@@ -17,31 +17,13 @@ public static class MyMath
 }
 public static class RRandom
 {
-	public static bool Bool
-	{
-		get
-		{
-			return UnityEngine.Random.value > 0.5f;
-		}
-	}
+	public static bool Bool => UnityEngine.Random.value > 0.5f;
 
-	public static float Value_Neg1_To_Pos1
-	{
-		get
-		{
-			return (UnityEngine.Random.value - 0.5f) * 2f;
-		}
-	}
+	public static float Value_Neg1_To_Pos1 => (UnityEngine.Random.value - 0.5f) * 2f;
 
-	public static float Value_Neg1_Or_Pos1
-	{
-		get
-		{
-			return Mathf.Sign(Value_Neg1_To_Pos1);
-		}
-	}
+	public static float Sign => Mathf.Sign(Value_Neg1_To_Pos1);
 
-	public static Vector3 insideUnitCircle
+	public static Vector3 InsideUnitCircle
 	{
 		get
 		{
@@ -50,10 +32,5 @@ public static class RRandom
 			ans.y = 0f;
 			return ans;
 		}
-	}
-
-	public static float RangeRounded(float min, float max, float unit)
-	{
-		return Mathf.RoundToInt(UnityEngine.Random.Range(min, max) / unit) * unit;
 	}
 }

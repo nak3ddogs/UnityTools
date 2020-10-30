@@ -10,13 +10,20 @@ public class ObservedValue<T>
 		get => _value;
 		set
 		{
-			if (!_value.Equals(value)) OnValueChange.Invoke(value);
+			bool isThereChange = !_value.Equals(value);
 			_value = value;
+			if (isThereChange) OnValueChange.Invoke(_value);
 		}
 	}
 
 	public ObservedValue(T value = default(T))
 	{
 		this._value = value;
+	}
+
+	public void Listen(ObservedValue<T> source)
+	{
+		this.Value = source.Value;
+		source.OnValueChange += x => this.Value = x;
 	}
 }

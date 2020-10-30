@@ -23,6 +23,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 			}
 			if (!_instance)
 			{
+#pragma warning disable
 				var tempInstance = System.Activator.CreateInstance<T>();
 				if ((tempInstance as Singleton<T>).IsAutoCreateOnReference && !IsApplicationQuitting)
 				{
@@ -33,7 +34,6 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 				{
 					Debug.LogWarning($"{PreferedName} Auto creation is disabled");
 				}
-#pragma warning disable
 #pragma warning enable
 				GameObject.DestroyImmediate(tempInstance);
 			}
@@ -65,7 +65,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		if (_instance == null)
+		if (!_instance)
 		{
 			_instance = this as T;
 			gameObject.name = (PreferedName);
@@ -73,7 +73,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 				DontDestroyOnLoad(_instance.gameObject);
 			OnInitialization();
 		}
-		else if (_instance != this)
+		else if (_instance && _instance != this)
 		{
 			Destroy(this);
 		}
