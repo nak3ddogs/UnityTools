@@ -1,29 +1,30 @@
-﻿using System;
+using System;
 
 public class ObservedValue<T>
 {
-	public event Action<T> OnValueChange;
-	private T _value;
+    public event Action<T, T> OnValueChange;
 
-	public T Value
-	{
-		get => _value;
-		set
-		{
-			bool isThereChange = !_value.Equals(value);
-			_value = value;
-			if (isThereChange) OnValueChange.Invoke(_value);
-		}
-	}
+    private T _value;
 
-	public ObservedValue(T value = default(T))
-	{
-		this._value = value;
-	}
+    public T Value
+    {
+        get => _value;
+        set
+        {
+            bool isThereChange = _value != null && !_value.Equals(value);
+            isThereChange |= (_value != null) != (value != null);
 
-	public void Listen(ObservedValue<T> source)
-	{
-		this.Value = source.Value;
-		source.OnValueChange += x => this.Value = x;
-	}
+            if (isThereChange)
+            {
+                var last = _value;
+                _value = value;
+                OnValueChange?.Invoke(last, _value);
+            }
+        }
+    }
+
+    public ObservedValue(T value = default(T))
+    {
+        this._value = value;
+    }
 }
